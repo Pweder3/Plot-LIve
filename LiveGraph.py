@@ -13,7 +13,7 @@ class LiveGraph():
         self.plots = []
         for i in range(plotNum):
             
-            self.plots.append(plot( fig,ax[i] ,names[i],"r")  )
+            self.plots.append(plot( fig,ax[i] ,5,names[i],"r")  )
         
         self.tick = 0
         
@@ -29,10 +29,10 @@ class LiveGraph():
         
             
         
-        
-LG = LiveGraph(2,["test1","test2"])
+if __name__ == "__main__":
+    LG = LiveGraph(1,["test1"])
 
-while True:
-    LG.update()
+    while True:
+        LG.update()
     
     

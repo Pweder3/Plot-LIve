@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+import time
 
 
 fig, ax = plt.subplots()
@@ -29,20 +29,37 @@ plt.pause(0.1)
 bg = fig.canvas.copy_from_bbox(fig.bbox)
 # draw the animated artist, this uses a cached renderer
 ax.draw_artist(ln)
+
 # show the result to the screen, this pushes the updated RGBA buffer from the
 # renderer to the GUI framework so you can see it
 fig.canvas.blit(fig.bbox)
 
+yData = [0] *5
+
 for j in range(1000):
+    
     # reset the background back in the canvas state, screen unchanged
     fig.canvas.restore_region(bg)
     # update the artist, neither the canvas state nor the screen have changed
+    yData.append(j**2)
+    yData.pop(0)    
     
+    ln.set_ydata(yData)
+    ln.set_xdata(range(len(yData)))
+    ax.relim()
+    ax.autoscale_view()
+
     # re-render the artist, updating the canvas state, but not the screen
+    plt.pause(1)
     ax.draw_artist(ln)
+    
     # copy the image to the GUI state, but screen might not be changed yet
+    
     fig.canvas.blit(fig.bbox)
+    
+    
     # flush any pending GUI events, re-painting the screen if needed
     fig.canvas.flush_events()
+    
     # you can put a pause in if you want to slow things down
-    # plt.pause(.1)
+    
