@@ -1,4 +1,6 @@
 from matplotlib import pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')
 import math
 import numpy as np
 from plot import Plot
@@ -11,11 +13,11 @@ class LiveGraph():
         fig,ax = plt.subplots(plotNum)
 
         self.plots = []
-        if type(ax) == list:
+        if type(ax) == np.ndarray:
             for i in range(plotNum):
-                self.plots.append(Plot( fig,ax[i] ,5,names[i],"r"))
+                self.plots.append(Plot( fig,ax[i] ,100,5,names[i],"r"))
         else:
-            self.plots.append(Plot( fig,ax ,5,names,"r"))
+            self.plots.append(Plot( fig,ax ,100,5,names,"r"))
         
         self.tick = 0
         
@@ -32,7 +34,7 @@ class LiveGraph():
             
         
 if __name__ == "__main__":
-    LG = LiveGraph(1,["test1"])
+    LG = LiveGraph(2,["test1","test 2"])
 
     while True:
         LG.update()
