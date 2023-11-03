@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 import math
 import numpy as np
-from plot import plot
+from plot import Plot
 
 class LiveGraph():
     
@@ -11,9 +11,11 @@ class LiveGraph():
         fig,ax = plt.subplots(plotNum)
 
         self.plots = []
-        for i in range(plotNum):
-            
-            self.plots.append(plot( fig,ax[i] ,5,names[i],"r")  )
+        if type(ax) == list:
+            for i in range(plotNum):
+                self.plots.append(Plot( fig,ax[i] ,5,names[i],"r"))
+        else:
+            self.plots.append(Plot( fig,ax ,5,names,"r"))
         
         self.tick = 0
         
@@ -25,7 +27,7 @@ class LiveGraph():
         
         self.tick += 1
         for plot in self.plots:
-            plot.update(self.tick,self.tick/100)
+            plot.update(self.tick,math.sin(self.tick/10))
         
             
         

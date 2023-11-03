@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-class plot():
+class Plot():
     
-    def __init__(self,fig,ax,grain,name,color) -> None:
+    def __init__(self,fig,ax,grain,dataAmount,names,colors) -> None:
         
         
         self.fig,self.ax = fig,ax
@@ -13,8 +13,8 @@ class plot():
         self.xData = range(grain)
         self.yData = [0] * grain 
         
-        self.name = name
-        self.color = color
+        self.name = names
+        self.color = colors
         
         self.ln, = self.ax.plot(self.xData, self.yData, animated=True,label=self.name)
         
@@ -23,6 +23,7 @@ class plot():
         
         self.bg = self.fig.canvas.copy_from_bbox(self.fig.bbox)
         self.fig.canvas.blit(self.fig.bbox)
+        self.ax.legend()
         
     def update(self,ticks,y):
         
@@ -39,7 +40,7 @@ class plot():
         self.ax.relim()
         self.ax.autoscale_view()
         time.sleep(.1)
-        self.fig.draw_artist(self.ln)
+        self.ax.draw_artist(self.ln)
         
         self.fig.canvas.blit(self.fig.bbox)
         self.fig.canvas.flush_events()
