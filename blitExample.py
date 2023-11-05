@@ -4,7 +4,10 @@ import numpy as np
 import time
 
 
-fig, ax = plt.subplots()
+fig = plt.figure()
+
+ax = fig.add_subplot(1,1,1)
+
 
 # animated=True tells matplotlib to only draw the artist when we
 # explicitly request it
@@ -41,6 +44,7 @@ for j in range(1000):
     
     # reset the background back in the canvas state, screen unchanged
     fig.canvas.restore_region(bg)
+    # time.sleep(1)
     # update the artist, neither the canvas state nor the screen have changed
     yData.append(math.sin(j/10))
     yData.pop(0)    
