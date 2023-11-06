@@ -1,3 +1,4 @@
+import time
 from matplotlib import pyplot as plt
 import matplotlib
 matplotlib.use('TkAgg')
@@ -13,14 +14,13 @@ class LiveGraph():
         
         # plotData = [grain,dataAmount,dataNames,overAllName]
         
-        fig = plt.figure(figsize=(10,10))
-
+        self.fig = plt.figure(figsize=(10,10))
         
         self.plots = []
-        for i in range(len(plotdata)-1):
+        for i in range(len(plotdata)):
             self.plots.append(Plot(
-                                   fig,
-                                   fig.add_subplot(i,1,i+1),
+                                   self.fig,
+                                   self.fig.add_subplot(len(plotdata),1,i+1),
                                    plotdata[i][0],
                                    plotdata[i][1],
                                    plotdata[i][2],
@@ -28,30 +28,46 @@ class LiveGraph():
                                    ))
         
         
-        self.tick = 0
         
-        plt.show(block=False)
+        self.tick = 0
+        plt.ion() 
+        plt.show(block = False)
         plt.pause(0.1)  
         
         
-    def update(self,y):
+        
+    def update(self,y,t = True):
         
         self.tick += 1
-        [plot.restore() for plot in self.plots]
-        [plot.setYData(y[i]) for i, plot in enumerate(self.plots)]
-        [plot.draw_artist() for plot in self.plots]
-        [plot.blitAndFlush() for plot in self.plots]
-            
+        if t:
+            [plot.restore() for plot in self.plots]
+            [plot.setYData(y[i]) for i, plot in enumerate(self.plots)]
+            [plot.draw_artist() for plot in self.plots]
+            [plot.blit() for plot in self.plots]
+        else:
+            for i,plot in enumerate(self.plots):
+                plot.restore()
+                plot.setYData(y[i])
+                plot.draw_artist()
+                plot.blit()
+        self.fig.canvas.flush_events()
+        
 
+    
             
         
             
         
 if __name__ == "__main__":
-    LG = LiveGraph([200,2,['a','b'],'fig1'],
-                   [200,2,['a','b'],'fig2'])
+    LG = LiveGraph(([50,2,['a','b'],'fig1',["red","blue"]],[50,2,['c','d'],'fig2',["red","blue"]]))
+    
 
     for j in range(1000):
-        LG.update()
+        LG.update([[1,math.sin(j/100)],
+                   [math.cos(j/100),math.sin(j/100)]],False)
+        
+
+            
+        
     
     

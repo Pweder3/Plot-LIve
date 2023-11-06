@@ -12,49 +12,63 @@ class Plot():
 
         self.fig = fig
         self.ax = ax
+        self.grain = grain
+        
+        
         self.names = names
         self.color = "r" * dataAmount if colors == None else colors
         
         self.xData = range(grain)
         
-        self.Ydata = []
+        self.yData = []
         self.Lines = []
         
+        
         for i in range(dataAmount):
-            self.Ydata.append([0] * grain ) 
+            self.yData.append([0] * grain ) 
+            ln, = self.ax.plot(self.xData,self.yData[i] , animated=False,label=dataNames[i], color=self.color[i])
             
-            self.ln, = self.ax.plot(self.xData,self.Ydata[i] , animated=True,label=dataNames[i], color=self.color[i])
-            self.Lines.append(self.ln)            
+            self.Lines.append(ln)            
         
     
         
-      
-        plt.pause(0.00001)
         
-        self.bg = fig.canvas.copy_from_bbox(fig.bbox)
-        self.fig.canvas.blit(self.fig.bbox)
+        
+        
+        self.fig.canvas.draw()
+        self.fig.show()
+        
+        self.bg = fig.canvas.copy_from_bbox(self.ax.bbox)
+        self.fig.canvas.blit(self.ax.bbox)
         self.ax.legend()
         
             
     def restore(self):
         self.fig.canvas.restore_region(self.bg)
     
-    def setYData(self,y):
+    def setYData(self,y): # for loop could be made more readable 
         for i,yVal in enumerate(y):
-            self.yData[i].append(yVal) if yVal != None else self.yData[i]
-            self.yData[i].pop(0) if yVal != None else None
-            self.ln.set_ydata(self.yData)
+            self.yData[i].append(yVal) 
+            self.yData[i].pop(0) 
+            
+            self.Lines[i].set_ydata(self.yData[i]) # every line has its own yData
         
         
     def draw_artist(self):
-        self.ax.relim()
-        self.ax.autoscale_view()
+        
+        
+        maxVal = max([max(y) for y in self.yData ])
+        minVal = min([min(y) for y in self.yData ])
+            
         for line in self.Lines:
             self.ax.draw_artist(line)
+            self.ax.axis([0,self.grain,minVal,maxVal])
+            
         self.ax.set_title(self.names)
         self.ax.legend()
         
-    def blitAndFlush(self):
+        
+    def blit(self):
         self.fig.canvas.blit(self.fig.bbox)
-        self.fig.canvas.flush_events()
+        
     
