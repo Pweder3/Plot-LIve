@@ -30,16 +30,16 @@ class LiveGraph():
         
         
         self.tick = 0
-        plt.ion() 
         plt.show(block = False)
         plt.pause(0.1)  
         
+    def interactiveMode(self):
+        plt.ion() 
         
-        
-    def update(self,y,t = True):
+    def update(self,y,plotInSequence = True):
         
         self.tick += 1
-        if t:
+        if plotInSequence:
             [plot.restore() for plot in self.plots]
             [plot.setYData(y[i]) for i, plot in enumerate(self.plots)]
             [plot.draw_artist() for plot in self.plots]
