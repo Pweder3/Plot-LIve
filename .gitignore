@@ -598,4 +598,7 @@ $RECYCLE.BIN/
 # Built Visual Studio Code Extensions
 *.vsix
 
+# Junk 
+src/junk/*
+
 # End of https://www.toptal.com/developers/gitignore/api/python,macos,windows,vs
