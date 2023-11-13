@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 class LiveGraph():
     
     
-    def __init__(self,plotdata,inteactiveMode = False) -> None:
+    def __init__(self,plotdata,inteactiveMode = True) -> None:
         
         
         # plotData = [grain,dataAmount,dataNames,overAllName,colors]
