@@ -600,5 +600,9 @@ $RECYCLE.BIN/
 
 # Junk 
 src/junk/*
+# Ignore the Junk directory
+Junk/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,macos,windows,vs
+
+
