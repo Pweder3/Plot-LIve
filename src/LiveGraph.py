@@ -74,14 +74,7 @@ class LiveGraph():
             
         
             
-        
-if __name__ == "__main__":
-    LG = LiveGraph(([200,2,['a','b'],'fig1',["r","b"]],[200,2,['c','d'],'fig2',["r","b"]]),True)
-    
 
-    for j in range(1000):
-        LG.update([[1,math.sin(j/10)],
-                   [math.cos(j/100),math.sin(j/100)]],False)
         
 
             
