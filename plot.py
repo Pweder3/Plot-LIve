@@ -4,6 +4,12 @@ import matplotlib
 matplotlib.use('TkAgg')
 import numpy as np
 import math
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+
+
 class Plot():
     
     def __init__(self,fig,ax,grain,dataAmount,dataNames,names,colors = None ) -> None:
@@ -16,7 +22,8 @@ class Plot():
         
         
         self.names = names
-        self.color = "r" * dataAmount if colors == None else colors
+        self.color = "r" * dataAmount if colors is None else colors
+        
         
         self.xData = range(grain)
         
@@ -26,7 +33,7 @@ class Plot():
         
         for i in range(dataAmount):
             self.yData.append([0] * grain ) 
-            ln, = self.ax.plot(self.xData,self.yData[i] , animated=False,label=dataNames[i], color=self.color[i])
+            ln, = self.ax.plot(self.xData,self.yData[i] , animated=False,label=dataNames[i], color=colors[i])
             
             self.Lines.append(ln)            
         
@@ -71,4 +78,5 @@ class Plot():
     def blit(self):
         self.fig.canvas.blit(self.fig.bbox)
         
-    
+    def updateBg(self):
+        self.bg = self.fig.canvas.copy_from_bbox(self.ax.bbox)
