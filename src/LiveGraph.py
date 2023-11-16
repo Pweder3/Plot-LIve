@@ -4,7 +4,7 @@ import matplotlib
 matplotlib.use('TkAgg')
 import math
 import numpy as np
-from src.plot import Plot
+from plot import Plot
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -14,20 +14,19 @@ class LiveGraph():
     def __init__(self,plotdata,inteactiveMode = True) -> None:
         
         
-        # plotData = [grain,dataAmount,dataNames,overAllName,colors]
+        # plotData = [grain,dataNames,overAllName,colors]
         
         self.fig = plt.figure(figsize=(10,10))
         
         self.plots = []
-        for i in range(len(plotdata)):
+        for i,data in enumerate(plotdata):
             self.plots.append(Plot(
                                    self.fig,
                                    self.fig.add_subplot(len(plotdata),1,i+1),
-                                   plotdata[i][0],
-                                   plotdata[i][1],
-                                   plotdata[i][2],
-                                   plotdata[i][3],
-                                   plotdata[i][4] if len(plotdata[i]) > 4 else None
+                                   data[0],
+                                   data[1],
+                                   data[2],
+                                   data[3] if len(data) > 3 else None
                                    ))
         
 

@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 
 class Plot():
     
-    def __init__(self,fig,ax,grain,dataAmount,dataNames,names,colors = None ) -> None:
+    def __init__(self,fig,ax,grain,dataNames,names,colors = None ) -> None:
         
         
 
@@ -22,7 +22,7 @@ class Plot():
         
         
         self.names = names
-        self.color = "r" * dataAmount if colors is None else colors
+        self.color = "r" * len(dataNames) if colors is None else colors
         
         
         self.xData = range(grain)
@@ -31,14 +31,15 @@ class Plot():
         self.Lines = []
         
         
-        for i in range(dataAmount):
+        for i in range(len(dataNames)):
             self.yData.append([0] * grain ) 
             ln, = self.ax.plot(self.xData,self.yData[i] , animated=False,label=dataNames[i], color=colors[i])
             
             self.Lines.append(ln)            
         
     
-        
+        self.minVal = 0
+        self.maxVal = 0 
         
         
         
@@ -61,15 +62,30 @@ class Plot():
             self.Lines[i].set_ydata(self.yData[i]) # every line has its own yData
         
         
-    def draw_artist(self):
+    def draw_artist(self,minVal = None, maxVal = None):
         
+        currMax = max([max(y) for y in self.yData ])
+        currMin = min([min(y) for y in self.yData ])
         
-        maxVal = max([max(y) for y in self.yData ])
-        minVal = min([min(y) for y in self.yData ])
+        # TODO: when the graph is more that 10% away from the edges start shrinking it for a cirtain % every call
+        # need to do this to be able to see spikes but also shrink back when they occoer.
+        
+        if maxVal is None:
+            if self.maxVal <= currMax:
+                self.maxVal = currMax    # sets the maxVal to the highest value ever recorded in the timeline if the data 
+            else:
+                self.maxVal *= .95
+                        
+        if minVal is None:
+            if self.minVal >= currMin:
+                self.minVal = currMin  
+            else:
+                self.minVal *= .95
             
         for line in self.Lines:
             self.ax.draw_artist(line)
-            self.ax.axis([0,self.grain,minVal,maxVal])
+            
+        self.ax.axis([0,self.grain,self.minVal,self.maxVal])
             
         self.ax.set_title(self.names)
         self.ax.legend()
