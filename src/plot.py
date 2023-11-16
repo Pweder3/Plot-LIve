@@ -1,6 +1,7 @@
 import time
 import matplotlib.pyplot as plt
 import matplotlib
+from matplotlib import figure, axes
 matplotlib.use('TkAgg')
 import numpy as np
 import math
@@ -12,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 
 class Plot():
     
-    def __init__(self,fig,ax,grain,dataNames,names,colors = None ) -> None:
+    def __init__(self,fig: figure , ax: axes ,grain: int,dataNames: list[int,] , names = list[str],colors = None ) -> None:
         
         
 
@@ -54,7 +55,7 @@ class Plot():
     def restore(self):
         self.fig.canvas.restore_region(self.bg)
     
-    def setYData(self,y): # for loop could be made more readable 
+    def setYData(self,y:list[list[int]]): # for loop could be made more readable 
         for i,yVal in enumerate(y):
             self.yData[i].append(yVal) 
             self.yData[i].pop(0) 
