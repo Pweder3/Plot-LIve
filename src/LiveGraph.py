@@ -42,7 +42,7 @@ class LiveGraph():
             # TODO: Allow for non interactive mode with window change detection and then updating after change 
         
         
-    def update(self,y = None ,drawInSequence = True):
+    def update(self,y: list[list[int,]] = None ,drawInSequence: bool = True) -> None :
         
         
         

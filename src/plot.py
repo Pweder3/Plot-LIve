@@ -55,7 +55,7 @@ class Plot():
     def restore(self):
         self.fig.canvas.restore_region(self.bg)
     
-    def setYData(self,y:list[list[int]]): # for loop could be made more readable 
+    def setYData(self,y:list[int,]): # for loop could be made more readable 
         for i,yVal in enumerate(y):
             self.yData[i].append(yVal) 
             self.yData[i].pop(0) 
@@ -63,7 +63,7 @@ class Plot():
             self.Lines[i].set_ydata(self.yData[i]) # every line has its own yData
         
         
-    def draw_artist(self,minVal = None, maxVal = None):
+    def draw_artist(self,minVal:int  = None, maxVal: int = None):
         
         currMax = max([max(y) for y in self.yData ])
         currMin = min([min(y) for y in self.yData ])
