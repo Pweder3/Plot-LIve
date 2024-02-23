@@ -7,6 +7,7 @@ import numpy as np
 from plot import Plot
 import logging
 logging.basicConfig(level=logging.INFO)
+from multiprocessing import Process, Queue, Pipe
 
 class LiveGraph():
     
@@ -72,25 +73,46 @@ class LiveGraph():
                     raise RuntimeError
             plot.updateBg()
         self.update()
+        
+        
+    def __call__(self,*args,drawInSequence: bool = True) -> None:
+        self.update(*args,drawInSequence)
+        
     
             
         
             
 
 if __name__ == "__main__":
-    LG = LiveGraph([200,['a','b'],'fig1',["r","b"]],
-                   [50,['a','b'],'fig2',["r","b"]]
-                   )
+    from multiprocessing.managers import BaseManager
+    
+    
+    class c_manager(BaseManager):
+        pass
+    
+    m = BaseManager()
+    
+    
+    m.register("LiveGraph",LiveGraph)
+    m.start()
+    
+        
+    LG = m.LiveGraph([200,['a','b'],'fig1',["r","b"]],
+                       [50,['a','b'],'fig2',["r","b"]]
+                       )
+
     cycleCount = 0
     start_time = time.time()
-    
+
+
+
     for j in range(1000):
         LG.update([1,math.sin(j/100)],
                   [math.sin(j/100),1]
                   )
         cycleCount += 1
         print(cycleCount/(time.time()-start_time))
-        
+
 
             
         
